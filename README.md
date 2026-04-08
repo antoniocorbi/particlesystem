@@ -16,4 +16,4 @@ cargo run
       `black` the particle dies and is removed from de simulation.
 
     - Also when a Particle System has 0 Particles in it it is also
-      removed (you can check bopth counters -particles and particlesystem-).
+      removed (you can check both counters -particles and particlesystem-).
