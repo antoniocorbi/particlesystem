@@ -151,12 +151,11 @@ impl PSystemAppUi {
         if current_time - self.last_time >= self.delta_time {
             // --- EJECUTA TU TAREA AQUÍ ---
             self.set_status_text(&format!("⌚: {}", current_time), Color32::GREEN);
+            self.tasks.emit(current_time);
 
             // println!("Tarea ejecutada!");
             self.last_time = current_time;
         }
-
-        self.tasks.emit(current_time);
     }
 }
 
