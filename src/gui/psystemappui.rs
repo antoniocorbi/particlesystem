@@ -16,7 +16,8 @@
 use crate::constants;
 use crate::model::particlesystem::ParticleSystem;
 use egui::{emath, pos2, Color32, Pos2, Rect, Vec2};
-use std::ops::Index;
+use signals2::*;
+use std::{ops::Index, sync::Arc};
 
 // ╔══════════════╗
 // ║ PSystemAppUi ║
@@ -44,12 +45,15 @@ pub struct PSystemAppUi {
     pub last_time: f64,
     pub delta_time: f64,
     pub grid: bool,
+    pub tasks: Signal<(f64,)>,
 }
 
 impl Default for PSystemAppUi {
     fn default() -> Self {
         //let world_rect = emath::Rect::from_points(&[pos2(0.0, 0.0), pos2(1.0, 1.0)]);
         let psystems = vec![];
+        let tasks = Signal::new();
+
         Self {
             // Example stuff:
             psystems,
@@ -62,6 +66,7 @@ impl Default for PSystemAppUi {
             last_time: 0.0,
             delta_time: constants::DELTA_TIME,
             grid: false,
+            tasks,
         }
     }
 }
@@ -91,6 +96,13 @@ impl PSystemAppUi {
         //     Default::default()
         // }
         Default::default()
+    }
+
+    pub fn add_task<F>(&mut self, f: F)
+    where
+        F: Fn(f64) + Send + Sync + 'static,
+    {
+        self.tasks.connect(f);
     }
 
     pub fn nparticles(&self) -> usize {
@@ -143,6 +155,8 @@ impl PSystemAppUi {
             // println!("Tarea ejecutada!");
             self.last_time = current_time;
         }
+
+        self.tasks.emit(current_time);
     }
 }
 

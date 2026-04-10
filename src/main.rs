@@ -20,10 +20,16 @@ fn main() -> eframe::Result {
             ),
         ..Default::default()
     };
+
     eframe::run_native(
         "eframe template",
         native_options,
-        Box::new(|cc| Ok(Box::new(PSystemAppUi::new(cc)))),
+        Box::new(|cc| {
+            let mut app = PSystemAppUi::new(cc);
+
+            // app.add_task(|ct| println!("· LOOP: {}", ct));
+            Ok(Box::new(app))
+        }),
     )
 }
 
