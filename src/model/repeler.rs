@@ -13,6 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod particle;
-pub mod particlesystem;
-pub mod repeler;
+use crate::constants;
+use egui::{pos2, text_selection::text_cursor_state, vec2, Pos2, Vec2};
+use rand::prelude::*;
+
+// ╔═════════╗
+// ║ Repeler ║
+// ╚═════════╝
+// -- : -------------------------------------------------------------------
+#[derive(Debug, Clone, Copy, PartialEq)]
+struct Repeler {}
