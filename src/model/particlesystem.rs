@@ -16,7 +16,7 @@
 use crate::constants;
 use crate::model::particle::Particle;
 use egui::emath;
-use egui::pos2;
+use egui::{pos2, vec2, Pos2, Vec2};
 //use rand::Rng;
 use rand::prelude::*;
 use std::ops::Index;
@@ -82,6 +82,12 @@ impl ParticleSystem {
         //println!("psystem size BEFORE cleaning: {}", self.particles.len());
         self.particles.retain(|p| !p.is_dead());
         //println!("psystem size AFTER cleaning: {}", self.particles.len());
+    }
+
+    pub fn apply_force(&mut self, force: impl Into<Vec2> + Clone) {
+        self.particles
+            .iter_mut()
+            .for_each(|p| p.apply_force(force.clone()));
     }
 }
 

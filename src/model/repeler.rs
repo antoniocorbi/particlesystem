@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::constants;
+use crate::model::particle::Particle;
 use egui::{pos2, text_selection::text_cursor_state, vec2, Pos2, Vec2};
 use rand::prelude::*;
 
@@ -22,4 +23,46 @@ use rand::prelude::*;
 // ╚═════════╝
 // -- : -------------------------------------------------------------------
 #[derive(Debug, Clone, Copy, PartialEq)]
-struct Repeler {}
+pub struct Repeler {
+    pub position: Pos2,
+    pub size: f32,
+    pub power: f32,
+}
+
+impl Repeler {
+    pub fn new(x: f32, y: f32, power: f32, size: f32) -> Self {
+        Self {
+            position: [x, y].into(),
+            size,
+            power,
+        }
+    }
+
+    pub fn repel(&self, p: &mut Particle) -> Vec2 {
+        let mut force = self.position - p.position;
+        let distance = force.to_pos2().distance_sq(Pos2::default());
+        let strength = -1.0 * self.power / distance;
+
+        force = force.normalized() * strength;
+        force
+    }
+}
+
+// repel(particle) {
+//
+//
+//   let force = p5.Vector.sub(this.position, particle.position);
+//
+//
+//   let distance = force.mag();
+//   distance = constrain(distance, 5, 50);
+//
+//
+//   let strength = -1 * this.power / (distance * distance);
+//
+//
+//   force.setMag(strength);
+//   return force;
+//
+//
+// }
