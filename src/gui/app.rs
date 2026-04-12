@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // -- Uses: ---------------------------------------------------------------
-use crate::constants::{self, CANVAS_W, MIN_GRAY};
+use crate::constants::{self, CANVAS_W, MIN_GRAY, REP_SIZE};
 use crate::{
     gui::psystemappui::PSystemAppUi,
     model::{particle::Particle, particlesystem::ParticleSystem, repeller::Repeller},
@@ -86,6 +86,17 @@ impl AppUi for PSystemAppUi {
                             //println!("¡Click derecho detectado en el Painter!");
                             if let Some(pos) = response.interact_pointer_pos() {
                                 println!("Añadir Repeller!: Click en la posición: {:?}", pos);
+                                if self.repeller.is_none() {
+                                    let wpos = self.worlds.as_ref().unwrap().pos2_to_world(pos);
+                                    let wx = wpos.x;
+                                    let wy = wpos.y;
+                                    self.repeller = Some(Repeller::new(
+                                        wx,
+                                        wy,
+                                        constants::REP_POWER,
+                                        constants::REP_SIZE,
+                                    ));
+                                }
                             }
                         }
 
@@ -232,6 +243,10 @@ impl AppUi for PSystemAppUi {
     }
 
     fn draw_particle_system(&self, ps: &ParticleSystem, painter: &egui::Painter) {
+        if self.repeller.is_some() {
+            self.draw_repeller(self.repeller.as_ref().unwrap(), painter);
+        }
+
         //println!("n-particles in psystem: {}", ps.len());
         for i in 0..ps.len() {
             //println!("Drawing particles {}: ", i);

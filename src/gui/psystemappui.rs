@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::constants;
-use crate::model::particlesystem::ParticleSystem;
+use crate::model::{particlesystem::ParticleSystem, repeller::Repeller};
 use egui::{emath, pos2, Color32, Pos2, Rect, Vec2};
 use signals2::*;
 use std::{ops::Index, sync::Arc};
@@ -32,6 +32,7 @@ pub struct PSystemAppUi {
     // ╚═════════╝
     pub psystems: Vec<ParticleSystem>,
     pub worlds: Option<Worlds>,
+    pub repeller: Option<Repeller>,
 
     // ╔═══════╗
     // ║ State ║
@@ -58,6 +59,7 @@ impl Default for PSystemAppUi {
             // Example stuff:
             psystems,
             worlds: None,
+            repeller: None,
             grid_size: 2.5,
             particle_size: constants::MAX_PSIZE,
             particle_mass: constants::MAX_PMASS,
@@ -114,6 +116,9 @@ impl PSystemAppUi {
             // Update particles state
             //println!("Updatint psystem status");
             ps.run();
+            if self.repeller.is_some() {
+                ps.apply_repeller(self.repeller.as_ref().unwrap());
+            }
         }
         self.psystems.retain(|ps| ps.len() != 0);
     }

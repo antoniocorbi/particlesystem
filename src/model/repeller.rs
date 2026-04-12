@@ -47,22 +47,3 @@ impl Repeller {
         force
     }
 }
-
-// repel(particle) {
-//
-//
-//   let force = p5.Vector.sub(this.position, particle.position);
-//
-//
-//   let distance = force.mag();
-//   distance = constrain(distance, 5, 50);
-//
-//
-//   let strength = -1 * this.power / (distance * distance);
-//
-//
-//   force.setMag(strength);
-//   return force;
-//
-//
-// }

@@ -98,13 +98,6 @@ impl ParticleSystem {
     }
 }
 
-// applyRepeller(repeller) {
-//   for (let particle of this.particles) {
-//     let force = repeller.repel(particle);
-//     particle.applyForce(force);
-//   }
-// }
-
 impl Index<usize> for ParticleSystem {
     type Output = Particle;
 

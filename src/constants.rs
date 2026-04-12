@@ -24,6 +24,8 @@ pub const MAX_PMASS: f32 = 250.0;
 
 // Forces
 pub const GRAVITY: [f32; 2] = [0.0, 0.00004];
+pub const REP_POWER: f32 = 0.0000002;
+pub const REP_SIZE: f32 = 20.0;
 
 // World dimensions
 pub const WR_MIN: [f32; 2] = [0.0, 0.0];
