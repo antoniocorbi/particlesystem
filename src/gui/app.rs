@@ -17,7 +17,7 @@
 use crate::constants::{self, CANVAS_W, MIN_GRAY};
 use crate::{
     gui::psystemappui::PSystemAppUi,
-    model::{particle::Particle, particlesystem::ParticleSystem},
+    model::{particle::Particle, particlesystem::ParticleSystem, repeller::Repeller},
 };
 use egui::{RichText, Style};
 //use delegate::delegate;
@@ -34,6 +34,7 @@ trait AppUi {
     fn create_drawing_widget(&mut self, ui: &mut Ui);
     fn draw_grid(&mut self, painter: &egui::Painter, rect: egui::Rect);
     fn draw_particle(&self, p: &Particle, painter: &egui::Painter);
+    fn draw_repeller(&self, r: &Repeller, painter: &egui::Painter);
     fn draw_particle_system(&self, p: &ParticleSystem, painter: &egui::Painter);
 
     // fn create_stroke_widget(&mut self, ui: &mut Ui) -> egui::Response;
@@ -80,14 +81,15 @@ impl AppUi for PSystemAppUi {
                             self.draw_grid(&painter, response.rect);
                         }
 
-                        // 2. Comprobamos el click izquierdo
+                        // 1. Comprobamos el click izquierdo
                         if response.secondary_clicked() {
                             //println!("¡Click derecho detectado en el Painter!");
                             if let Some(pos) = response.interact_pointer_pos() {
-                                println!("Click en la posición: {:?}", pos);
+                                println!("Añadir Repeller!: Click en la posición: {:?}", pos);
                             }
                         }
 
+                        // 2. Comprobamos el click intermedio
                         if response.middle_clicked() {
                             //println!("¡Click central detectado en el Painter!");
                             if let Some(pos) = response.interact_pointer_pos() {
@@ -96,6 +98,7 @@ impl AppUi for PSystemAppUi {
                             //self.show_data();
                         }
 
+                        // 3. Comprobamos el click izquierdo
                         if response.clicked() {
                             //println!("¡Click izquierdo detectado en el Painter!");
                             if let Some(pos) = response.interact_pointer_pos() {
@@ -219,6 +222,13 @@ impl AppUi for PSystemAppUi {
 
             painter.circle_filled(center, p.size, color);
         }
+    }
+
+    fn draw_repeller(&self, r: &Repeller, painter: &egui::Painter) {
+        let center = self.pos2_to_screen(r.position);
+        let color = Color32::RED;
+
+        painter.circle_filled(center, r.size, color);
     }
 
     fn draw_particle_system(&self, ps: &ParticleSystem, painter: &egui::Painter) {

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::constants;
-use crate::model::particle::Particle;
+use crate::model::{particle::Particle, repeller::Repeller};
 use egui::emath;
 use egui::{pos2, vec2, Pos2, Vec2};
 //use rand::Rng;
@@ -89,7 +89,21 @@ impl ParticleSystem {
             .iter_mut()
             .for_each(|p| p.apply_force(force.clone()));
     }
+
+    pub fn apply_repeller(&mut self, r: &Repeller) {
+        self.particles.iter_mut().for_each(|p| {
+            let force = r.repel(p);
+            p.apply_force(force.clone())
+        });
+    }
 }
+
+// applyRepeller(repeller) {
+//   for (let particle of this.particles) {
+//     let force = repeller.repel(particle);
+//     particle.applyForce(force);
+//   }
+// }
 
 impl Index<usize> for ParticleSystem {
     type Output = Particle;

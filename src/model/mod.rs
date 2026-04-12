@@ -15,4 +15,4 @@
 
 pub mod particle;
 pub mod particlesystem;
-pub mod repeler;
+pub mod repeller;

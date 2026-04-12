@@ -19,17 +19,17 @@ use egui::{pos2, text_selection::text_cursor_state, vec2, Pos2, Vec2};
 use rand::prelude::*;
 
 // ╔═════════╗
-// ║ Repeler ║
+// ║ Repeller ║
 // ╚═════════╝
 // -- : -------------------------------------------------------------------
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Repeler {
+pub struct Repeller {
     pub position: Pos2,
     pub size: f32,
     pub power: f32,
 }
 
-impl Repeler {
+impl Repeller {
     pub fn new(x: f32, y: f32, power: f32, size: f32) -> Self {
         Self {
             position: [x, y].into(),
