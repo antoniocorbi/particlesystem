@@ -139,18 +139,6 @@ impl AppUi for PSystemAppUi {
                                     self.particle_mass,
                                 );
                                 self.psystems.push(ps);
-
-                                // Update particles status
-                                //self.run();
-                                // Draw particles
-                                // for ps in &self.psystems {
-                                //     self.draw_particle_system(ps, &painter);
-                                // }
-
-                                // println!(
-                                //     "Click en la posición screen:{:?} / world: {:?} / w.x: {} · w.y: {} ",
-                                //     pos, wpos, wx, wy,
-                                // );
                             }
                         }
 
@@ -203,8 +191,14 @@ impl AppUi for PSystemAppUi {
 
                         // Update particles status
                         self.run();
+
+                        // Draw repeller
+                        if self.repeller.is_some() {
+                            self.draw_repeller(self.repeller.as_ref().unwrap(), &painter);
+                        }
+
                         // Draw particles
-                        //println!("N-psystems: {}", self.psystems.len());
+                        // println!("N-psystems: {}", self.psystems.len());
                         for ps in &self.psystems {
                             //println!("Drawing psystem");
                             self.draw_particle_system(ps, &painter);
@@ -243,10 +237,6 @@ impl AppUi for PSystemAppUi {
     }
 
     fn draw_particle_system(&self, ps: &ParticleSystem, painter: &egui::Painter) {
-        if self.repeller.is_some() {
-            self.draw_repeller(self.repeller.as_ref().unwrap(), painter);
-        }
-
         //println!("n-particles in psystem: {}", ps.len());
         for i in 0..ps.len() {
             //println!("Drawing particles {}: ", i);
