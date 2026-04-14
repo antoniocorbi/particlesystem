@@ -86,17 +86,16 @@ impl AppUi for PSystemAppUi {
                             //println!("¡Click derecho detectado en el Painter!");
                             if let Some(pos) = response.interact_pointer_pos() {
                                 println!("Añadir Repeller!: Click en la posición: {:?}", pos);
-                                if self.repeller.is_none() {
-                                    let wpos = self.worlds.as_ref().unwrap().pos2_to_world(pos);
-                                    let wx = wpos.x;
-                                    let wy = wpos.y;
-                                    self.repeller = Some(Repeller::new(
-                                        wx,
-                                        wy,
-                                        constants::REP_POWER,
-                                        constants::REP_SIZE,
-                                    ));
-                                }
+                                let wpos = self.worlds.as_ref().unwrap().pos2_to_world(pos);
+                                let wx = wpos.x;
+                                let wy = wpos.y;
+                                let repeller = Repeller::new(
+                                    wx,
+                                    wy,
+                                    constants::REP_POWER,
+                                    constants::REP_SIZE,
+                                );
+                                self.repellers.push(repeller);
                             }
                         }
 
@@ -193,9 +192,12 @@ impl AppUi for PSystemAppUi {
                         self.run();
 
                         // Draw repeller
-                        if self.repeller.is_some() {
-                            self.draw_repeller(self.repeller.as_ref().unwrap(), &painter);
+                        for r in &self.repellers {
+                            self.draw_repeller(r, &painter);
                         }
+                        //if self.repeller.is_some() {
+                        //    self.draw_repeller(self.repeller.as_ref().unwrap(), &painter);
+                        //}
 
                         // Draw particles
                         // println!("N-psystems: {}", self.psystems.len());

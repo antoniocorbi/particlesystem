@@ -32,7 +32,7 @@ pub struct PSystemAppUi {
     // ╚═════════╝
     pub psystems: Vec<ParticleSystem>,
     pub worlds: Option<Worlds>,
-    pub repeller: Option<Repeller>,
+    pub repellers: Vec<Repeller>,
 
     // ╔═══════╗
     // ║ State ║
@@ -53,13 +53,14 @@ impl Default for PSystemAppUi {
     fn default() -> Self {
         //let world_rect = emath::Rect::from_points(&[pos2(0.0, 0.0), pos2(1.0, 1.0)]);
         let psystems = vec![];
+        let repellers = vec![];
         let tasks = Signal::new();
 
         Self {
             // Example stuff:
             psystems,
             worlds: None,
-            repeller: None,
+            repellers,
             grid_size: 2.5,
             particle_size: constants::MAX_PSIZE,
             particle_mass: constants::MAX_PMASS,
@@ -116,9 +117,10 @@ impl PSystemAppUi {
             // Update particles state
             //println!("Updatint psystem status");
             ps.run();
-            if self.repeller.is_some() {
-                ps.apply_repeller(self.repeller.as_ref().unwrap());
-            }
+            self.repellers.iter().for_each(|r| ps.apply_repeller(r));
+            //if self.repeller.is_some() {
+            //    ps.apply_repeller(self.repeller.as_ref().unwrap());
+            //}
         }
         self.psystems.retain(|ps| ps.len() != 0);
     }
