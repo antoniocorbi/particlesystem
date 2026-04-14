@@ -95,7 +95,7 @@ impl Particle {
     }
 
     fn update_life(&mut self) {
-        const FRAME_COUNT_INI: u16 = 30;
+        const FRAME_COUNT_INI: u16 = 60;
         static mut FRAME_COUNT: u16 = FRAME_COUNT_INI;
         unsafe {
             FRAME_COUNT -= 1;
