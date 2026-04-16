@@ -15,7 +15,7 @@
 
 use crate::constants;
 use crate::model::particle::Particle;
-use egui::{pos2, text_selection::text_cursor_state, vec2, Pos2, Vec2};
+use egui::{emath, pos2, text_selection::text_cursor_state, vec2, Pos2, Vec2};
 use rand::prelude::*;
 
 // ╔══════════╗
@@ -31,7 +31,7 @@ pub struct Repeller {
 
 impl Repeller {
     pub fn new(x: f32, y: f32, power: f32, size: f32) -> Self {
-        let power = power / 275_000_000.0;
+        let power = power / 250_000.0;
 
         Self {
             position: [x, y].into(),
@@ -42,8 +42,10 @@ impl Repeller {
 
     pub fn repel(&self, p: &mut Particle) -> Vec2 {
         let mut force = self.position - p.position;
-        let distance = force.to_pos2().distance_sq(Pos2::default());
+        let mut distance = force.to_pos2().distance_sq(Pos2::default());
         // let distance = force.to_pos2().distance(Pos2::default());
+        // distance = constrain(distance, 5, 50);
+        distance = distance.clamp(5.0, 50.0);
         let strength = -1.0 * self.power / distance;
 
         force = force.normalized() * strength;
