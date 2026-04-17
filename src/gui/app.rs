@@ -85,7 +85,7 @@ impl AppUi for PSystemAppUi {
                         if response.secondary_clicked() {
                             //println!("¡Click derecho detectado en el Painter!");
                             if let Some(pos) = response.interact_pointer_pos() {
-                                println!("Añadir Repeller!: Click en la posición: {:?}", pos);
+                                // println!("Añadir Repeller!: Click en la posición: {:?}", pos);
                                 let wpos = self.worlds.as_ref().unwrap().pos2_to_world(pos);
                                 let wx = wpos.x;
                                 let wy = wpos.y;
@@ -234,6 +234,10 @@ impl AppUi for PSystemAppUi {
     fn draw_repeller(&self, r: &Repeller, painter: &egui::Painter) {
         let center = self.pos2_to_screen(r.position);
         let color = Color32::RED;
+        let red = (r.power * constants::REP_POWER_DIV * 2.5).clamp(0.0, 255.0) as u8;
+        let g = Color32::RED.g();
+        let b = Color32::RED.b();
+        let color = Color32::from_rgb(dbg!(red), g, b);
 
         painter.circle_filled(center, r.size, color);
     }

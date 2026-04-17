@@ -31,7 +31,10 @@ pub struct Repeller {
 
 impl Repeller {
     pub fn new(x: f32, y: f32, power: f32, size: f32) -> Self {
-        let power = power / 250_000.0;
+        let mut rng = rand::rng();
+        let power = rng.random_range(1.0..=power);
+        let power = power / constants::REP_POWER_DIV;
+        let size = rng.random_range(1.0..=size);
 
         Self {
             position: [x, y].into(),
