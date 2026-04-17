@@ -172,9 +172,9 @@ impl PSystemAppUi {
             let center = r.position;
             let rw = r.size * radius_at_size_one;
             let radius_sq = 0.00005;
-            let point_inside_repeller = dbg!(point.distance_sq(center)) <= dbg!(radius_sq);
+            let point_inside_repeller = point.distance_sq(center) <= radius_sq;
 
-            dbg!(point, center);
+            // dbg!(point, center);
             //dbg!(point_inside_repeller, rw, r.size, radius_at_size_one);
             !point_inside_repeller
         });
