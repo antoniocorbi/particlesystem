@@ -89,13 +89,20 @@ impl AppUi for PSystemAppUi {
                                 let wpos = self.worlds.as_ref().unwrap().pos2_to_world(pos);
                                 let wx = wpos.x;
                                 let wy = wpos.y;
-                                let repeller = Repeller::new(
-                                    wx,
-                                    wy,
-                                    constants::REP_POWER,
-                                    constants::REP_SIZE,
-                                );
-                                self.repellers.push(repeller);
+                                let nrepellers_old = self.repellers.len();
+                                self.remove_repellers_at_point(wx, wy);
+                                let nrepellers_new = self.repellers.len();
+                                // dbg!(nrepellers_old, nrepellers_new);
+                                if nrepellers_new == nrepellers_old {
+                                    // No repeller under (wx,wy) removed so create a new one
+                                    let repeller = Repeller::new(
+                                        wx,
+                                        wy,
+                                        constants::REP_POWER,
+                                        constants::REP_SIZE,
+                                    );
+                                    self.repellers.push(repeller);
+                                }
                             }
                         }
 
@@ -237,7 +244,7 @@ impl AppUi for PSystemAppUi {
         let red = (r.power * constants::REP_POWER_DIV * 2.5).clamp(0.0, 255.0) as u8;
         let g = Color32::RED.g();
         let b = Color32::RED.b();
-        let color = Color32::from_rgb(dbg!(red), g, b);
+        let color = Color32::from_rgb(red, g, b);
 
         painter.circle_filled(center, r.size, color);
     }

@@ -164,6 +164,21 @@ impl PSystemAppUi {
             self.last_time = current_time;
         }
     }
+
+    pub fn remove_repellers_at_point(&mut self, wx: f32, wy: f32) {
+        let radius_at_size_one = self.pos2_to_world(pos2(1.0, 0.0)).x;
+        self.repellers.retain(|r| {
+            let point = pos2(wx, wy);
+            let center = r.position;
+            let rw = r.size * radius_at_size_one;
+            let radius_sq = 0.00005;
+            let point_inside_repeller = dbg!(point.distance_sq(center)) <= dbg!(radius_sq);
+
+            dbg!(point, center);
+            //dbg!(point_inside_repeller, rw, r.size, radius_at_size_one);
+            !point_inside_repeller
+        });
+    }
 }
 
 // ╔════════╗
