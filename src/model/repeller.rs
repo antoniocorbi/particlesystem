@@ -54,4 +54,8 @@ impl Repeller {
         force = force.normalized() * strength;
         force
     }
+
+    pub fn wsize(&self) -> f32 {
+        emath::remap_clamp(self.size, 0.0..=constants::REP_SIZE, 0.0..=1.0)
+    }
 }

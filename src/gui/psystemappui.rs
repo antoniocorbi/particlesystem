@@ -170,9 +170,13 @@ impl PSystemAppUi {
         self.repellers.retain(|r| {
             let point = pos2(wx, wy);
             let center = r.position;
-            let rw = r.size * radius_at_size_one;
-            let radius_sq = 0.00005;
-            let point_inside_repeller = point.distance_sq(center) <= radius_sq;
+            let rw = 0.00005;
+            // let rw = r.wsize();
+            // let rw = r.size * radius_at_size_one;
+            let pradius = point.distance_sq(center);
+            // dbg!(rw);
+            // dbg!(pradius);
+            let point_inside_repeller = pradius <= rw;
 
             // dbg!(point, center);
             //dbg!(point_inside_repeller, rw, r.size, radius_at_size_one);

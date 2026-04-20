@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::constants;
-use egui::{pos2, text_selection::text_cursor_state, vec2, Pos2, Vec2};
+use egui::{emath::remap_clamp, pos2, text_selection::text_cursor_state, vec2, Pos2, Vec2};
 use rand::prelude::*;
 
 // ╔══════════╗
@@ -130,11 +130,23 @@ impl Particle {
     pub fn is_dead(&self) -> bool {
         self.lifespan == 0
     }
+
+    pub fn wsize(&self) -> f32 {
+        remap_clamp(self.size, 0.0..=100.0, 0.0..=1.0)
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn size_remap() {
+        let p = Particle::new(10.0, 2.5, 15.6);
+        let wsize = p.wsize();
+
+        assert!(wsize >= 0.0 && wsize <= 1.0);
+    }
 
     #[test]
     fn lifespan() {
