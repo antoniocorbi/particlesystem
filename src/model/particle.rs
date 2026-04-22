@@ -37,7 +37,7 @@ impl Particle {
         let velx = rng.random_range(-0.0008..=0.0008);
         let vely = rng.random_range(-0.0005..=0.0000001);
         let mass = rng.random_range(1.0..=20.0);
-        let size = rng.random_range(1.0..=size);
+        let size = rng.random_range(constants::MIN_PSIZE..=size);
 
         // println!(
         //     "Particle@{}/{}: vx:{}, vy:{} , size:{}",

@@ -19,14 +19,16 @@ pub const UI_ZOOM: f32 = 2.0;
 // particle system parameters
 pub const LIFE_DELTA: u8 = 8;
 pub const NPARTICLES: usize = 350;
-pub const MAX_PSIZE: f32 = 25.0;
-pub const MAX_PMASS: f32 = 250.0;
+pub const MAX_PSIZE: f32 = 0.009;
+pub const MIN_PSIZE: f32 = 0.001;
+pub const MAX_PMASS: f32 = 180.0;
 
 // Forces
 pub const GRAVITY: [f32; 2] = [0.0, 0.00004];
 pub const REP_POWER: f32 = 125.0;
 pub const REP_POWER_DIV: f32 = 250_000.0;
-pub const REP_SIZE: f32 = 25.0;
+pub const MIN_RSIZE: f32 = 0.003;
+pub const REP_SIZE: f32 = 0.008;
 
 // World dimensions
 pub const WR_MIN: [f32; 2] = [0.0, 0.0];

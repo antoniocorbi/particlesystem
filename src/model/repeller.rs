@@ -34,7 +34,7 @@ impl Repeller {
         let mut rng = rand::rng();
         let power = rng.random_range(1.0..=power);
         let power = power / constants::REP_POWER_DIV;
-        let size = rng.random_range(1.0..=size);
+        let size = rng.random_range(constants::MIN_RSIZE..=size);
 
         Self {
             position: [x, y].into(),

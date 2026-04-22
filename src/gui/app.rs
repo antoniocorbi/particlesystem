@@ -224,6 +224,10 @@ impl AppUi for PSystemAppUi {
     fn draw_particle(&self, p: &Particle, painter: &egui::Painter) {
         if !p.is_dead() {
             let center = self.pos2_to_screen(p.position);
+            let width_sr = self.worlds.as_ref().unwrap().screen_rect.width();
+            let width_wr = self.worlds.as_ref().unwrap().world_rect.width();
+            let pscr_size = egui::remap_clamp(p.size, 0.0..=width_wr, 0.0..=width_sr);
+
             // let grayidx = if p.lifespan > (255 - constants::MIN_GRAY) {
             //     constants::MIN_GRAY
             // } else {
@@ -234,19 +238,22 @@ impl AppUi for PSystemAppUi {
             let grayidx = p.lifespan;
             let color = Color32::from_gray(grayidx);
 
-            painter.circle_filled(center, p.size, color);
+            painter.circle_filled(center, pscr_size, color);
         }
     }
 
     fn draw_repeller(&self, r: &Repeller, painter: &egui::Painter) {
         let center = self.pos2_to_screen(r.position);
+        let width_sr = self.worlds.as_ref().unwrap().screen_rect.width();
+        let width_wr = self.worlds.as_ref().unwrap().world_rect.width();
+        let rscr_size = egui::remap_clamp(r.size, 0.0..=width_wr, 0.0..=width_sr);
         let color = Color32::RED;
         let red = (r.power * constants::REP_POWER_DIV * 2.5).clamp(0.0, 255.0) as u8;
         let g = Color32::RED.g();
         let b = Color32::RED.b();
         let color = Color32::from_rgb(red, g, b);
 
-        painter.circle_filled(center, r.size, color);
+        painter.circle_filled(center, rscr_size, color);
     }
 
     fn draw_particle_system(&self, ps: &ParticleSystem, painter: &egui::Painter) {
@@ -372,8 +379,11 @@ impl eframe::App for PSystemAppUi {
 
             ui.horizontal(|ui| {
                 ui.add(
-                    egui::Slider::new(&mut self.particle_size, 1.0..=constants::MAX_PSIZE)
-                        .text("Max Particle size"),
+                    egui::Slider::new(
+                        &mut self.particle_size,
+                        constants::MIN_PSIZE..=constants::MAX_PSIZE,
+                    )
+                    .text("Max Particle size"),
                 );
                 ui.separator();
                 ui.add(
